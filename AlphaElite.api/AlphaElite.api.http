@@ -1,0 +1,116 @@
+@AlphaElite.api_HostAddress = http://localhost:5198
+
+GET {{AlphaElite.api_HostAddress}}/weatherforecast/
+Accept: application/json
+###
+POST {{AlphaElite.api_HostAddress}}/companies
+Content-Type: application/json
+
+{
+
+ "companyCode": "COMP002",
+ "companyName": "My Second Company",
+ "isActive": true,
+ "createdAt": "2026-09-03T09:15:00"
+
+}
+
+###
+POST {{AlphaElite.api_HostAddress}}/devices
+Content-Type: application/json
+
+{
+ "companyId": 1,
+ "deviceCode": "DEV003",
+ "deviceName": "Super Extension PC",
+ "isActive": true,
+ "createdAt": "2026-09-03T09:50:00"
+
+}
+
+###
+POST {{AlphaElite.api_HostAddress}}/company-databases
+Content-Type: application/json
+
+{
+
+ "companyId": 1,
+ "serverName": "db68259.public.databaseasp.net",
+ "databaseName": "db68259",
+ "isActive": true
+
+}
+
+###
+GET https://localhost:7156/test-tenant/1
+Accept: application/json
+
+###
+POST https://localhost:7156/tenant/1/members
+Content-Type: application/json
+
+{
+ "memberCode": "MEM001",
+ "fullName": "Juan Dela Cruz",
+ "email": "juan@gmail.com",
+ "isActive": true
+}
+
+###
+POST https://localhost:7156/tenant/1/attendance
+Content-Type: application/json
+
+{
+ "memberId": 1,
+ "checkInDate": "2026-09-18T08:00:00"
+}
+
+###
+GET https://localhost:7156/tenant/1/attendance
+Accept: application/json
+
+###
+POST https://localhost:7156/tenant/1/payments
+Content-Type: application/json
+
+{
+ "memberId": 1,
+ "amountPaid": 500.00,
+ "paymentDate": "2026-09-18T09:00:00",
+ "nextDueDate": "2026-10-18T09:00:00",
+ "notes": "Monthly membership payment"
+}
+
+###
+GET https://localhost:7156/tenant/1/payments
+Accept: application/json
+
+###
+POST https://localhost:7156/tenant/1/feedback
+Content-Type: application/json
+
+{
+ "memberId": 1,
+ "rating": 5,
+ "comments": "Great facilities and friendly staff."
+}
+
+###
+GET https://localhost:7156/tenant/1/feedback
+Accept: application/json
+
+###
+POST https://localhost:7156/tenant/1/inquiries
+Content-Type: application/json
+
+{
+ "fullName": "Maria Santos",
+ "contactNumber": "09181234567",
+ "emailAddress": "maria@example.com",
+ "interestedPlan": "Monthly Basic",
+ "message": "Interested in joining, what are your rates?"
+}
+
+###
+GET https://localhost:7156/tenant/1/inquiries
+Accept: application/json

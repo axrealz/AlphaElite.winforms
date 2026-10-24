@@ -1,0 +1,29 @@
+Operation      : verify
+Target tenant  : COMP003 / Alpha Elite - Tenant C (CompanyId 3)
+Target database: db68417.public.databaseasp.net / db68417 (credential key 'TenantC')
+Context        : TenantCAlphaEliteDbContext
+
+Applied migrations: 20260930030000_InitialTenantC, 20261001090000_AddBranchManagement
+Table count in target database: 11
+  [PASS] Members: query over all mapped columns succeeded (1 row).
+  [PASS] Branches: query over all mapped columns succeeded (3 row(s)).
+  [PASS] UserAccounts: query over all mapped columns succeeded (1 row).
+  [PASS] Attendances: query over all mapped columns succeeded (1 row).
+  [PASS] Payments: query over all mapped columns succeeded (1 row).
+  [PASS] Feedbacks: query over all mapped columns succeeded (1 row).
+  [PASS] Inquiries: query over all mapped columns succeeded (1 row).
+  [PASS] Subscriptions: query over all mapped columns succeeded (1 row).
+  [PASS] RetentionRecords: query over all mapped columns succeeded (1 row).
+  [PASS] Complaints: query over all mapped columns succeeded (1 row).
+
+Row counts:
+        Members 6 | Branches 3 | UserAccounts 4 | Attendances 5 | Payments 5 | Feedbacks 5 | Inquiries 9 | Subscriptions 2 | RetentionRecords 1 | Complaints 2
+
+Branches in Tenant C:
+        BranchId 2 | BR-CEBU | AlphaElite Cebu Branch | active: True
+        BranchId 3 | BR-DAVAO | AlphaElite Davao Branch | active: True
+        BranchId 1 | BR-MAIN | AlphaElite Manila - Head Office | active: True
+  [PASS] exactly the expected 10 application tables are present.
+
+--- Result: OK | failures: 0 ---
+Report written to: C:\Users\axeld\source\repos\AlphaElite.winforms\AlphaElite.winforms\bin\Debug\net10.0-windows\tenantc-verify-report.txt

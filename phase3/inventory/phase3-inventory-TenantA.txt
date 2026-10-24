@@ -1,0 +1,116 @@
+Database inventory: TenantA
+Company        : COMP001 / My First Company (CompanyId 1)
+Credential key : TenantA
+Server         : db68259.public.databaseasp.net
+Database       : db68259
+Branch aware   : False
+
+=== Tables and row counts ===
+        __EFMigrationsHistory            rows = 4
+        Attendances                      rows = 1
+        Feedbacks                        rows = 1
+        Inquiries                        rows = 5
+        Members                          rows = 1
+        Payments                         rows = 1
+
+=== Primary keys ===
+        __EFMigrationsHistory            PK = MigrationId
+        Attendances                      PK = AttendanceId
+        Feedbacks                        PK = FeedbackId
+        Inquiries                        PK = InquiryId
+        Members                          PK = MemberId
+        Payments                         PK = PaymentId
+
+=== Primary-key ranges ===
+        Attendances                      count = 1    min = 1      max = 1
+        Feedbacks                        count = 1    min = 1      max = 1
+        Inquiries                        count = 5    min = 1      max = 6
+        Members                          count = 1    min = 1      max = 1
+        Payments                         count = 1    min = 1      max = 1
+
+=== Row fingerprints (CHECKSUM_AGG(BINARY_CHECKSUM(*) over all columns)) ===
+        Attendances                      checksum = 1965424511
+        Feedbacks                        checksum = -2000721808
+        Inquiries                        checksum = -683684898
+        Members                          checksum = -1578125915
+        Payments                         checksum = -962425800
+
+=== Columns ===
+
+  Table: Attendances
+        AttendanceId                   int(10,0)       null=NO IDENTITY
+        MemberId                       int(10,0)       null=NO
+        CheckInDate                    datetime2             null=NO
+
+  Table: Feedbacks
+        FeedbackId                     int(10,0)       null=NO IDENTITY
+        MemberId                       int(10,0)       null=NO
+        Rating                         int(10,0)       null=NO
+        Comments                       nvarchar(-1)         null=YES
+        SubmittedAt                    datetime2             null=NO
+
+  Table: Inquiries
+        InquiryId                      int(10,0)       null=NO IDENTITY
+        FullName                       nvarchar(-1)         null=NO
+        ContactNumber                  nvarchar(-1)         null=YES
+        EmailAddress                   nvarchar(-1)         null=YES
+        InterestedPlan                 nvarchar(-1)         null=YES
+        Message                        nvarchar(-1)         null=YES
+        IsFollowedUp                   bit             null=NO
+        CreatedAt                      datetime2             null=NO
+
+  Table: Members
+        MemberId                       int(10,0)       null=NO IDENTITY
+        MemberCode                     nvarchar(50)         null=NO
+        FullName                       nvarchar(200)        null=NO
+        Email                          nvarchar(200)        null=NO
+        IsActive                       bit             null=NO
+        CreatedAt                      datetime2             null=NO
+
+  Table: Payments
+        PaymentId                      int(10,0)       null=NO IDENTITY
+        MemberId                       int(10,0)       null=NO
+        AmountPaid                     decimal(18,2)       null=NO
+        PaymentDate                    datetime2             null=NO
+        NextDueDate                    datetime2             null=YES
+        Notes                          nvarchar(-1)         null=YES
+
+=== Foreign keys ===
+        Attendances.MemberId -> Members.MemberId  ON DELETE CASCADE  [FK_Attendances_Members_MemberId]
+        Feedbacks.MemberId -> Members.MemberId  ON DELETE CASCADE  [FK_Feedbacks_Members_MemberId]
+        Payments.MemberId -> Members.MemberId  ON DELETE CASCADE  [FK_Payments_Members_MemberId]
+
+=== Unique indexes / constraints ===
+        __EFMigrationsHistory            PK___EFMigrationsHistory                 PRIMARY KEY (MigrationId)
+        Attendances                      PK_Attendances                           PRIMARY KEY (AttendanceId)
+        Feedbacks                        PK_Feedbacks                             PRIMARY KEY (FeedbackId)
+        Inquiries                        PK_Inquiries                             PRIMARY KEY (InquiryId)
+        Members                          IX_Members_MemberCode                    UNIQUE INDEX (MemberCode)
+        Members                          PK_Members                               PRIMARY KEY (MemberId)
+        Payments                         PK_Payments                              PRIMARY KEY (PaymentId)
+
+=== Data (password columns excluded) ===
+
+  Attendances (1 row(s))
+        AttendanceId | MemberId | CheckInDate
+        1 | 1 | 2026-09-18 07:34:14.831
+
+  Feedbacks (1 row(s))
+        FeedbackId | MemberId | Rating | Comments | SubmittedAt
+        1 | 1 | 1 | Good | 2026-09-18 07:34:48.137
+
+  Inquiries (5 row(s))
+        InquiryId | FullName | ContactNumber | EmailAddress | InterestedPlan | Message | IsFollowedUp | CreatedAt
+        1 | Axel Dos Pueblos | 09165140479 | axeldospueblos@gmail.com | Monthly | N/A | True | 2026-09-18 07:34:57.761
+        2 | Richard Culanag | 09123456789 | richard@gmail.com | Weekly | N/A | True | 2026-09-19 08:29:54.414
+        4 | asas | 09123456677 | asas@gmail.com | anually | N/A | True | 2026-09-19 08:33:30.249
+        5 | Ivan Glenn Entrina | 09123568934 | Ivan@gmail.com | Monthly | N/A | True | 2026-09-19 08:33:30.249
+        6 | Ivan Glenn Entrina | 09123568934 | Ivan@gmail.com | Monthly | N/A | True | 2026-09-19 08:33:30.249
+
+  Members (1 row(s))
+        MemberId | MemberCode | FullName | Email | IsActive | CreatedAt
+        1 | 102 | axel | axel@gmail.com | True | 2026-09-18 07:12:20.218
+
+  Payments (1 row(s))
+        PaymentId | MemberId | AmountPaid | PaymentDate | NextDueDate | Notes
+        1 | 1 | 500.00 | 2026-09-18 07:34:26.202 | NULL | NULL

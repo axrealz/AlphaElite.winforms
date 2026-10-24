@@ -1,0 +1,53 @@
+=== Alpha Elite startup verification (read-only) ===
+Started (UTC): 2026-10-01 05:26:50
+Configured master connection string: yes (value not printed)
+Configured appsettings.json found: True
+Branch-aware credential keys: TenantC
+
+--- Tenant discovery (master database) ---
+  [PASS] active tenants discovered: 3
+        CompanyId 1 | COMP001 | My First Company | db db68259 on db68259.public.databaseasp.net | key TenantA | branch-aware: False
+        CompanyId 2 | COMP002 | My Second Company | db db68416 on db68416.public.databaseasp.net | key TenantB | branch-aware: False
+        CompanyId 3 | COMP003 | Alpha Elite - Tenant C | db db68417 on db68417.public.databaseasp.net | key TenantC | branch-aware: True
+
+--- Tenant credential + schema availability (read-only) ---
+        COMP001: credentials configured: yes
+  [PASS] COMP001: UserAccounts table present: False
+        NOTE: COMP001 cannot authenticate users yet (no UserAccounts table). Its database was not modified.
+        COMP002: credentials configured: yes
+  [PASS] COMP002: UserAccounts table present: True
+        COMP003: credentials configured: yes
+  [PASS] COMP003: UserAccounts table present: True
+
+--- Authentication (production path) ---
+        Target tenant: COMP003 / Alpha Elite - Tenant C (CompanyId 3)
+        Username: gymstaff (password not printed)
+  [PASS] authenticated: user 'gymstaff', role 'GymStaff', name 'Branch B Gym Staff'
+
+--- Context selection vs. tenant schema ---
+  [PASS] context used: TenantCAlphaEliteDbContext
+
+--- Dashboard / module queries (same queries the main window runs) ---
+  [PASS] Branches (count): 2
+  [PASS] Complaints (count): 2
+  [PASS] Members (count): 6
+  [PASS] Members active (count): 4
+  [PASS] Members per branch (groups): 2
+  [PASS] Attendance (count): 11
+  [PASS] Attendance today (count): 2
+  [PASS] Payments (count): 5
+  [PASS] Payments total (sum): 4150.00
+  [PASS] Feedback (count): 5
+  [PASS] Inquiries (count): 10
+  [PASS] Subscriptions (count): 2
+  [PASS] Retention records (count): 1
+  [PASS] User accounts (count): 4
+
+--- Main window construction (no window is shown) ---
+  [PASS] Form1 constructed; tenant switcher: items=1, selected=Alpha Elite - Tenant C (COMP003); session: role=GymStaff; branchAware=True; branchId=2; memberId=n/a; permissions=5
+
+--- Error signature scan ---
+  [PASS] no 'Invalid column name', 'Invalid object name', connection-login, NullReference or BranchId/MemberId errors encountered.
+
+--- Result: ALL CHECKS PASSED | checks: 21 | failures: 0 ---
+Report written to: C:\Users\axeld\source\repos\AlphaElite.winforms\AlphaElite.winforms\bin\Debug\net10.0-windows\selftest-report.txt

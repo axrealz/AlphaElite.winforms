@@ -1,0 +1,56 @@
+=== Alpha Elite startup verification (read-only) ===
+Started (UTC): 2026-09-30 15:00:08
+Configured master connection string: yes (value not printed)
+Configured appsettings.json found: True
+Branch-aware credential keys: TenantC
+
+--- Tenant discovery (master database) ---
+  [PASS] active tenants discovered: 3
+        CompanyId 1 | COMP001 | My First Company | db db68259 on db68259.public.databaseasp.net | key TenantA | branch-aware: False
+        CompanyId 2 | COMP002 | My Second Company | db db68416 on db68416.public.databaseasp.net | key TenantB | branch-aware: False
+        CompanyId 3 | COMP003 | Alpha Elite - Tenant C | db db68417 on db68417.public.databaseasp.net | key TenantC | branch-aware: True
+
+--- Tenant credential + schema availability (read-only) ---
+        COMP001: credentials configured: yes
+  [PASS] COMP001: UserAccounts table present: False
+        NOTE: COMP001 cannot authenticate users yet (no UserAccounts table). Its database was not modified.
+        COMP002: credentials configured: yes
+  [PASS] COMP002: UserAccounts table present: True
+        COMP003: credentials configured: yes
+  [PASS] COMP003: UserAccounts table present: True
+
+--- Authentication (production path) ---
+        Target tenant: COMP002 / My Second Company (CompanyId 2)
+        Username: admin (password not printed)
+  [PASS] authenticated: user 'admin', role 'Admin', name 'System Administrator'
+
+--- Context selection vs. tenant schema ---
+  [PASS] context used: TenantAlphaEliteDbContext
+  [INFO] stored password hash is legacy unsalted SHA-256; re-hashing needs an approved write (none performed).
+
+--- Dashboard / module queries (same queries the main window runs) ---
+  [PASS] Members (count): 5
+  [PASS] Members active (count): 3
+  [PASS] Attendance (count): 4
+  [PASS] Attendance today (count): 0
+  [PASS] Attendance trend last 30 days (rows): 4
+  [PASS] Payments (count): 4
+  [PASS] Payments total (sum): 3650.00
+  [PASS] Payments monthly trend rows (last 6 months): 4
+  [PASS] Feedback (count): 4
+  [PASS] Feedback average rating: 3.25
+  [PASS] Inquiries (count): 5
+  [PASS] Inquiries pending follow-up (count): 0
+  [PASS] Subscriptions (count): 0
+  [PASS] Subscriptions active (count): 0
+  [PASS] Retention records (count): 1
+  [PASS] Retention records pending approval (count): 0
+
+--- Main window construction (no window is shown) ---
+  [PASS] Form1 constructed; tenant switcher: items=2, selected=My Second Company (COMP002); session: role=Admin; branchAware=False; branchId=all; memberId=n/a; permissions=10
+
+--- Error signature scan ---
+  [PASS] no 'Invalid column name', 'Invalid object name', connection-login, NullReference or BranchId/MemberId errors encountered.
+
+--- Result: ALL CHECKS PASSED | checks: 23 | failures: 0 ---
+Report written to: C:\Users\axeld\source\repos\AlphaElite.winforms\AlphaElite.winforms\bin\Debug\net10.0-windows\selftest-report.txt

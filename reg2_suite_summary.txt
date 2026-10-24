@@ -1,0 +1,6 @@
+--master-verify-subs EXIT=0 elapsed=11s log=reg2_master-verify-subs.log
+--phase3-subscription-verify EXIT=0 elapsed=32s log=reg2_phase3-subscription-verify.log
+--phase7-subscription-verify EXIT=1 elapsed=210s log=reg2_phase7-subscription-verify.log
+--phase9-subscription-verify EXIT=1 elapsed=137s log=reg2_phase9-subscription-verify.log
+--phase4-subscription-workflow-verify EXIT=1 elapsed=72s log=reg2_phase4-subscription-workflow-verify.log
+ALL_SUITES_DONE

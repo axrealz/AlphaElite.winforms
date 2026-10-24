@@ -1,0 +1,103 @@
+======================================================================
+TENANT C DATA MIGRATION VERIFICATION (read-only)
+======================================================================
+Target tenant  : COMP003 / Alpha Elite - Tenant C (CompanyId 3)
+Target server  : db68417.public.databaseasp.net
+Target database: db68417 (credential key 'TenantC')
+Sources        : A = COMP001/db68259, B = COMP002/db68416 (read-only)
+Context        : TenantCAlphaEliteDbContext
+
+--- A/B. Row counts (total and per branch) ---
+        Members            total = 6    BR-A 1 / BR-B 5
+        Attendances        total = 5    BR-A 1 / BR-B 4
+        Payments           total = 5    BR-A 1 / BR-B 4
+        Feedbacks          total = 5    BR-A 1 / BR-B 4
+        Inquiries          total = 10   BR-A 5 / BR-B 5
+        Subscriptions      total = 0    (no BranchId column)
+        RetentionRecords   total = 1    BR-A 0 / BR-B 1
+        UserAccounts       total = 1    BR-A 0 / BR-B 1
+        Complaints         total = 0    BR-A 0 / BR-B 0
+
+--- C. Payment totals ---
+  [PASS] BR-A payments total: 500.00 (expected 500.00)
+  [PASS] BR-B payments total: 3650.00 (expected 3650.00)
+  [PASS] Payments grand total: 4150.00 (expected 4150.00)
+
+--- D. Feedback average ---
+  [PASS] BR-B feedback average: 3.2500 (expected 3.2500)
+
+--- E. Tenant A duplicate inquiries preserved ---
+  [PASS] 'Ivan Glenn Entrina' rows in BR-A: 2 (expected 2)
+  [PASS] Inquiries total: 10 (expected 10)
+
+--- F. FK / orphan checks (all must be 0) ---
+  [PASS] Attendances -> Members: 0 orphan(s)
+  [PASS] Payments -> Members: 0 orphan(s)
+  [PASS] Feedbacks -> Members: 0 orphan(s)
+  [PASS] Subscriptions -> Members: 0 orphan(s)
+  [PASS] RetentionRecords -> Members: 0 orphan(s)
+  [PASS] Complaints -> Members: 0 orphan(s)
+  [PASS] UserAccounts -> Members: 0 orphan(s)
+  [PASS] Members -> Branches: 0 orphan(s)
+  [PASS] Attendances -> Branches: 0 orphan(s)
+  [PASS] Payments -> Branches: 0 orphan(s)
+  [PASS] Feedbacks -> Branches: 0 orphan(s)
+  [PASS] Inquiries -> Branches: 0 orphan(s)
+  [PASS] RetentionRecords -> Branches: 0 orphan(s)
+  [PASS] UserAccounts -> Branches: 0 orphan(s)
+  [PASS] Complaints -> Branches: 0 orphan(s)
+
+--- G. UserAccount 'admin' ---
+  [PASS] UserAccounts count: 1 (expected 1)
+  [PASS] admin username: admin (expected admin)
+  [PASS] admin role: Admin (expected Admin)
+  [PASS] admin active: True (expected True)
+  [PASS] admin MemberId is NULL: True (expected True)
+  [PASS] admin BranchId: 2 (expected 2)
+  [PASS] admin password hash migrated verbatim (64-char legacy SHA-256, value not printed): True
+
+--- H/I. Subscriptions, Complaints and branches ---
+  [PASS] Subscriptions count: 0 (expected 0)
+  [PASS] Complaints count: 0 (expected 0)
+  [PASS] Branches count: 2 (expected 2)
+
+--- J. Tenant A and Tenant B unchanged (vs Phase 3 baselines) ---
+  [PASS] Tenant A unchanged (counts + checksums)
+  [PASS] Tenant B unchanged (counts + checksums)
+
+--- K. Master database unchanged ---
+  [PASS] Companies: 3 (expected 3)
+  [PASS] CompanyDatabase: 3 (expected 3)
+  [PASS] Devices: 1 (expected 1)
+  [PASS] AspNetUsers: 0 (expected 0)
+  [PASS] AspNetRoles: 0 (expected 0)
+  [PASS] AspNetUserRoles: 0 (expected 0)
+
+--- L. Tenant C migration history ---
+  [PASS] history = 20260930030000_InitialTenantC
+
+--- N. Tenant C admin authentication flow ---
+  [PASS] Tenant C admin authenticated (password not printed): role=Admin, branch-aware=True
+        password rehash needed (legacy hash): True
+
+--- O. Tenant C dashboard load (module queries + main window construction) ---
+  [PASS] dashboard Branches (count): 2
+  [PASS] dashboard Members (count): 6
+  [PASS] dashboard Members active (count): 4
+  [PASS] dashboard Members per branch (groups): 2
+  [PASS] dashboard Attendance (count): 5
+  [PASS] dashboard Payments (count): 5
+  [PASS] dashboard Payments total (sum): 4150.00
+  [PASS] dashboard Feedback (count): 5
+  [PASS] dashboard Feedback average rating: 2.8
+  [PASS] dashboard Inquiries (count): 10
+  [PASS] dashboard Subscriptions (count): 0
+  [PASS] dashboard Retention records (count): 1
+  [PASS] dashboard User accounts (count): 1
+  [PASS] dashboard Complaints (count): 0
+  [PASS] Form1 constructed; tenant switcher: items=2, selected=My First Company (COMP001)
+
+--- P. Error signature scan ---
+  [PASS] no Invalid column/object, connection-login, null-reference, FK or orphan errors.
+
+--- Result: OK | failures: 0 ---

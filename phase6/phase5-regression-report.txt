@@ -1,0 +1,80 @@
+======================================================================
+PHASE 5 ACCEPTANCE VERIFICATION (master / super admin)
+======================================================================
+
+--- 1. Master Identity login (Master DB, ASP.NET Identity) ---
+  [SKIP] set ALPHA_MASTER_PASSWORD to verify the master login path.
+
+--- 2. Master Identity users ---
+  [PASS] at least one master user exists: 1 user(s)
+  [PASS] SuperAdmin role assigned: superadmin
+  [PASS] no hash material in user projection: projection exposes username/email/roles/status only
+
+--- 3. Master admin authorization matrix ---
+  [PASS] MasterAdmin -> TenantManagement: granted
+  [PASS] MasterAdmin -> AdminPanel: granted
+  [PASS] MasterAdmin -> BusinessIntelligence: granted
+  [PASS] MasterAdmin -> ManageUsers: granted
+  [PASS] MasterAdmin NOT -> ManageMembers: denied (tenant operation)
+  [PASS] MasterAdmin NOT -> ManageAttendance: denied (tenant operation)
+  [PASS] tenant Admin NOT -> TenantManagement: denied (master operation)
+  [PASS] tenant Manager NOT -> AdminPanel: denied (master operation)
+  [PASS] 'SuperAdmin' normalizes to MasterAdmin: MasterAdmin
+
+--- 4. Session separation ---
+  [PASS] MasterUserSession is a distinct type from UserSession: compiler-level separation enforced
+
+--- 5. Platform counts (master DB) ---
+  [PASS] total companies: total=3
+  [PASS] active companies: active=3
+  [PASS] configured tenant databases: configured=3
+  [PASS] active tenant databases: active=3
+
+--- 6. Tenant aggregates (existing resolver/factory) ---
+  [PASS] aggregate read: COMP001: members=1 attendance=1 payments=1 total=500.00
+  [PASS] aggregate read: COMP002: members=5 attendance=4 payments=4 total=3,650.00
+  [PASS] aggregate read: COMP003: members=6 attendance=11 payments=5 total=4,150.00
+
+--- 7. A/B/C data baselines (regression) ---
+  [PASS] Tenant A members: members=1
+  [PASS] Tenant A attendance: attendance=1
+  [PASS] Tenant A payments: payments=1, total=500.00
+  [PASS] Tenant A feedback: feedback=1
+  [PASS] Tenant A inquiries: inquiries=5
+  [PASS] Tenant B members: members=5
+  [PASS] Tenant B attendance: attendance=4
+  [PASS] Tenant B payments: payments=4, total=3,650.00
+  [PASS] Tenant B feedback: feedback=4
+  [PASS] Tenant B inquiries: inquiries=5
+  [PASS] Tenant B retention: retention=1
+  [PASS] Tenant B user accounts: userAccounts=1
+  [PASS] Tenant C members: members=6
+  [PASS] Tenant C branches: branches=2
+  [PASS] Tenant C attendance: attendance=11
+  [PASS] Tenant C payments: payments=5, total=4,150.00
+  [PASS] Tenant C feedback: feedback=5
+  [PASS] Tenant C inquiries: inquiries=10
+  [PASS] Tenant C user accounts: userAccounts=4
+  [PASS] Tenant C complaints (demo state): complaints=2
+  [PASS] Tenant C subscriptions (demo state): subscriptions=2
+
+--- 8. Company activation enforcement (deactivate -> login blocked -> reactivate) ---
+  [PASS] deactivate Tenant C company: ok
+  [PASS] login blocked while company inactive: rejected
+  [PASS] reactivate Tenant C company: ok
+  [PASS] login works again after reactivation: role=Admin, branchAware=True
+  [PASS] Tenant B admin login still works: role=Admin, rehashNeeded=True
+
+--- 9. Master DB structural integrity ---
+  [PASS] Companies rows: count=3
+  [PASS] CompanyDatabase rows: count=3
+  [PASS] Devices rows: count=1
+  [PASS] all companies re-activated after test: IsActive=true for all
+
+--- 10. Master dashboard window ---
+  [PASS] MasterDashboardForm constructs: Alpha Elite - Master Administration (superadmin)
+  [PASS] master navigation complete: Dashboard, Companies/Tenants, TenantDatabases, Subscriptions&Billing, Users/Administrators, TenantOverview, Reports/BI, System/AdminPanel, Logout
+
+======================================================================
+PHASE 5 RESULT: 52/52 checks passed
+======================================================================

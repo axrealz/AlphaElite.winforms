@@ -1,0 +1,229 @@
+Database inventory: TenantC
+Company        : COMP003 / Alpha Elite - Tenant C (CompanyId 3)
+Credential key : TenantC
+Server         : db68417.public.databaseasp.net
+Database       : db68417
+Branch aware   : True
+
+=== Tables and row counts ===
+        __EFMigrationsHistory            rows = 1
+        Attendances                      rows = 0
+        Branches                         rows = 2
+        Complaints                       rows = 0
+        Feedbacks                        rows = 0
+        Inquiries                        rows = 0
+        Members                          rows = 0
+        Payments                         rows = 0
+        RetentionRecords                 rows = 0
+        Subscriptions                    rows = 0
+        UserAccounts                     rows = 0
+
+=== Primary keys ===
+        __EFMigrationsHistory            PK = MigrationId
+        Attendances                      PK = AttendanceId
+        Branches                         PK = BranchId
+        Complaints                       PK = ComplaintId
+        Feedbacks                        PK = FeedbackId
+        Inquiries                        PK = InquiryId
+        Members                          PK = MemberId
+        Payments                         PK = PaymentId
+        RetentionRecords                 PK = RetentionRecordId
+        Subscriptions                    PK = SubscriptionId
+        UserAccounts                     PK = UserAccountId
+
+=== Primary-key ranges ===
+        Attendances                      count = 0    min = (null) max = (null)
+        Branches                         count = 2    min = 1      max = 2
+        Complaints                       count = 0    min = (null) max = (null)
+        Feedbacks                        count = 0    min = (null) max = (null)
+        Inquiries                        count = 0    min = (null) max = (null)
+        Members                          count = 0    min = (null) max = (null)
+        Payments                         count = 0    min = (null) max = (null)
+        RetentionRecords                 count = 0    min = (null) max = (null)
+        Subscriptions                    count = 0    min = (null) max = (null)
+        UserAccounts                     count = 0    min = (null) max = (null)
+
+=== Row fingerprints (CHECKSUM_AGG(BINARY_CHECKSUM(*) over all columns)) ===
+        Attendances                      checksum = (null / empty)
+        Branches                         checksum = 50648009
+        Complaints                       checksum = (null / empty)
+        Feedbacks                        checksum = (null / empty)
+        Inquiries                        checksum = (null / empty)
+        Members                          checksum = (null / empty)
+        Payments                         checksum = (null / empty)
+        RetentionRecords                 checksum = (null / empty)
+        Subscriptions                    checksum = (null / empty)
+        UserAccounts                     checksum = (null / empty)
+
+=== Columns ===
+
+  Table: Attendances
+        AttendanceId                   int(10,0)       null=NO IDENTITY
+        MemberId                       int(10,0)       null=NO
+        CheckInDate                    datetime2             null=NO
+        BranchId                       int(10,0)       null=YES
+
+  Table: Branches
+        BranchId                       int(10,0)       null=NO IDENTITY
+        BranchCode                     nvarchar(20)         null=NO
+        BranchName                     nvarchar(200)        null=NO
+        Address                        nvarchar(-1)         null=YES
+        ContactNumber                  nvarchar(-1)         null=YES
+        IsActive                       bit             null=NO
+        CreatedAt                      datetime2             null=NO
+
+  Table: Complaints
+        ComplaintId                    int(10,0)       null=NO IDENTITY
+        MemberId                       int(10,0)       null=NO
+        BranchId                       int(10,0)       null=YES
+        Subject                        nvarchar(200)        null=NO
+        Description                    nvarchar(-1)         null=NO
+        Status                         nvarchar(-1)         null=NO
+        CreatedAt                      datetime2             null=NO
+        ResolvedAt                     datetime2             null=YES
+        ResolutionNotes                nvarchar(-1)         null=YES
+
+  Table: Feedbacks
+        FeedbackId                     int(10,0)       null=NO IDENTITY
+        MemberId                       int(10,0)       null=NO
+        Rating                         int(10,0)       null=NO
+        Comments                       nvarchar(-1)         null=YES
+        SubmittedAt                    datetime2             null=NO
+        BranchId                       int(10,0)       null=YES
+
+  Table: Inquiries
+        InquiryId                      int(10,0)       null=NO IDENTITY
+        FullName                       nvarchar(-1)         null=NO
+        ContactNumber                  nvarchar(-1)         null=YES
+        EmailAddress                   nvarchar(-1)         null=YES
+        InterestedPlan                 nvarchar(-1)         null=YES
+        Message                        nvarchar(-1)         null=YES
+        IsFollowedUp                   bit             null=NO
+        CreatedAt                      datetime2             null=NO
+        BranchId                       int(10,0)       null=YES
+
+  Table: Members
+        MemberId                       int(10,0)       null=NO IDENTITY
+        MemberCode                     nvarchar(50)         null=NO
+        FullName                       nvarchar(200)        null=NO
+        Email                          nvarchar(200)        null=NO
+        IsActive                       bit             null=NO
+        CreatedAt                      datetime2             null=NO
+        BranchId                       int(10,0)       null=YES
+
+  Table: Payments
+        PaymentId                      int(10,0)       null=NO IDENTITY
+        MemberId                       int(10,0)       null=NO
+        AmountPaid                     decimal(18,2)       null=NO
+        PaymentDate                    datetime2             null=NO
+        NextDueDate                    datetime2             null=YES
+        Notes                          nvarchar(-1)         null=YES
+        BranchId                       int(10,0)       null=YES
+
+  Table: RetentionRecords
+        RetentionRecordId              int(10,0)       null=NO IDENTITY
+        MemberId                       int(10,0)       null=NO
+        Reason                         nvarchar(-1)         null=NO
+        RetentionAction                nvarchar(-1)         null=NO
+        Promotion                      nvarchar(-1)         null=YES
+        PromotionDetails               nvarchar(-1)         null=YES
+        Notes                          nvarchar(-1)         null=YES
+        CreatedAt                      datetime2             null=NO
+        CreatedBy                      nvarchar(-1)         null=NO
+        Status                         nvarchar(-1)         null=NO
+        ApprovedBy                     nvarchar(-1)         null=YES
+        ApprovedAt                     datetime2             null=YES
+        ApprovalReason                 nvarchar(-1)         null=YES
+        RejectionReason                nvarchar(-1)         null=YES
+        CompletedAt                    datetime2             null=YES
+        CompletionNotes                nvarchar(-1)         null=YES
+        AssignedStaff                  nvarchar(-1)         null=YES
+        BranchId                       int(10,0)       null=YES
+
+  Table: Subscriptions
+        SubscriptionId                 int(10,0)       null=NO IDENTITY
+        MemberId                       int(10,0)       null=NO
+        PlanName                       nvarchar(-1)         null=NO
+        Price                          decimal(18,2)       null=NO
+        BillingCycle                   nvarchar(-1)         null=NO
+        StartDate                      datetime2             null=NO
+        EndDate                        datetime2             null=NO
+        IsActive                       bit             null=NO
+
+  Table: UserAccounts
+        UserAccountId                  int(10,0)       null=NO IDENTITY
+        Username                       nvarchar(50)         null=NO
+        PasswordHash                   nvarchar(-1)         null=NO
+        FullName                       nvarchar(-1)         null=NO
+        Role                           nvarchar(-1)         null=NO
+        IsActive                       bit             null=NO
+        CreatedAt                      datetime2             null=NO
+        MemberId                       int(10,0)       null=YES
+        BranchId                       int(10,0)       null=YES
+
+=== Foreign keys ===
+        Attendances.BranchId -> Branches.BranchId  ON DELETE NO_ACTION  [FK_Attendances_Branches_BranchId]
+        Attendances.MemberId -> Members.MemberId  ON DELETE CASCADE  [FK_Attendances_Members_MemberId]
+        Complaints.BranchId -> Branches.BranchId  ON DELETE NO_ACTION  [FK_Complaints_Branches_BranchId]
+        Complaints.MemberId -> Members.MemberId  ON DELETE CASCADE  [FK_Complaints_Members_MemberId]
+        Feedbacks.BranchId -> Branches.BranchId  ON DELETE NO_ACTION  [FK_Feedbacks_Branches_BranchId]
+        Feedbacks.MemberId -> Members.MemberId  ON DELETE CASCADE  [FK_Feedbacks_Members_MemberId]
+        Inquiries.BranchId -> Branches.BranchId  ON DELETE NO_ACTION  [FK_Inquiries_Branches_BranchId]
+        Members.BranchId -> Branches.BranchId  ON DELETE NO_ACTION  [FK_Members_Branches_BranchId]
+        Payments.BranchId -> Branches.BranchId  ON DELETE NO_ACTION  [FK_Payments_Branches_BranchId]
+        Payments.MemberId -> Members.MemberId  ON DELETE CASCADE  [FK_Payments_Members_MemberId]
+        RetentionRecords.BranchId -> Branches.BranchId  ON DELETE NO_ACTION  [FK_RetentionRecords_Branches_BranchId]
+        RetentionRecords.MemberId -> Members.MemberId  ON DELETE CASCADE  [FK_RetentionRecords_Members_MemberId]
+        Subscriptions.MemberId -> Members.MemberId  ON DELETE CASCADE  [FK_Subscriptions_Members_MemberId]
+        UserAccounts.BranchId -> Branches.BranchId  ON DELETE NO_ACTION  [FK_UserAccounts_Branches_BranchId]
+        UserAccounts.MemberId -> Members.MemberId  ON DELETE NO_ACTION  [FK_UserAccounts_Members_MemberId]
+
+=== Unique indexes / constraints ===
+        __EFMigrationsHistory            PK___EFMigrationsHistory                 PRIMARY KEY (MigrationId)
+        Attendances                      PK_Attendances                           PRIMARY KEY (AttendanceId)
+        Branches                         IX_Branches_BranchCode                   UNIQUE INDEX (BranchCode)
+        Branches                         PK_Branches                              PRIMARY KEY (BranchId)
+        Complaints                       PK_Complaints                            PRIMARY KEY (ComplaintId)
+        Feedbacks                        PK_Feedbacks                             PRIMARY KEY (FeedbackId)
+        Inquiries                        PK_Inquiries                             PRIMARY KEY (InquiryId)
+        Members                          IX_Members_MemberCode                    UNIQUE INDEX (MemberCode)
+        Members                          PK_Members                               PRIMARY KEY (MemberId)
+        Payments                         PK_Payments                              PRIMARY KEY (PaymentId)
+        RetentionRecords                 PK_RetentionRecords                      PRIMARY KEY (RetentionRecordId)
+        Subscriptions                    PK_Subscriptions                         PRIMARY KEY (SubscriptionId)
+        UserAccounts                     IX_UserAccounts_Username                 UNIQUE INDEX (Username)
+        UserAccounts                     PK_UserAccounts                          PRIMARY KEY (UserAccountId)
+
+=== Data (password columns excluded) ===
+
+  Attendances (0 row(s))
+        AttendanceId | MemberId | CheckInDate | BranchId
+
+  Branches (2 row(s))
+        BranchId | BranchCode | BranchName | Address | ContactNumber | IsActive | CreatedAt
+        1 | BR-A | Branch A | NULL | NULL | True | 2026-09-30 03:11:16.058
+        2 | BR-B | Branch B | NULL | NULL | True | 2026-09-30 03:11:16.378
+
+  Complaints (0 row(s))
+        ComplaintId | MemberId | BranchId | Subject | Description | Status | CreatedAt | ResolvedAt | ResolutionNotes
+
+  Feedbacks (0 row(s))
+        FeedbackId | MemberId | Rating | Comments | SubmittedAt | BranchId
+
+  Inquiries (0 row(s))
+        InquiryId | FullName | ContactNumber | EmailAddress | InterestedPlan | Message | IsFollowedUp | CreatedAt | BranchId
+
+  Members (0 row(s))
+        MemberId | MemberCode | FullName | Email | IsActive | CreatedAt | BranchId
+
+  Payments (0 row(s))
+        PaymentId | MemberId | AmountPaid | PaymentDate | NextDueDate | Notes | BranchId
+
+  RetentionRecords (0 row(s))
+        RetentionRecordId | MemberId | Reason | RetentionAction | Promotion | PromotionDetails | Notes | CreatedAt | CreatedBy | Status | ApprovedBy | ApprovedAt | ApprovalReason | RejectionReason | CompletedAt | CompletionNotes | AssignedStaff | BranchId
+
+  Subscriptions (0 row(s))
+        SubscriptionId | MemberId | PlanName | Price | BillingCycle | StartDate | EndDate | IsActive
+
+  UserAccounts (0 row(s)) [1 password column(s) hidden]
+        UserAccountId | Username | FullName | Role | IsActive | CreatedAt | MemberId | BranchId

@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="AlphaElite.api/AlphaElite.api.csproj" />
+  <Project Path="AlphaElite.domain/AlphaElite.domain.csproj" />
+  <Project Path="AlphaElite.winforms/AlphaElite.winforms.csproj" />
+  <Project Path="WinFormsLibrary1/AlphaElite.infrastructure.csproj" />
+</Solution>

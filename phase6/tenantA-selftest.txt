@@ -1,0 +1,63 @@
+=== Alpha Elite startup verification (read-only) ===
+Started (UTC): 2026-09-30 23:53:26
+Configured master connection string: yes (value not printed)
+Configured appsettings.json found: True
+Branch-aware credential keys: TenantC
+
+--- Tenant discovery (master database) ---
+  [PASS] active tenants discovered: 3
+        CompanyId 1 | COMP001 | My First Company | db db68259 on db68259.public.databaseasp.net | key TenantA | branch-aware: False
+        CompanyId 2 | COMP002 | My Second Company | db db68416 on db68416.public.databaseasp.net | key TenantB | branch-aware: False
+        CompanyId 3 | COMP003 | Alpha Elite - Tenant C | db db68417 on db68417.public.databaseasp.net | key TenantC | branch-aware: True
+
+--- Tenant credential + schema availability (read-only) ---
+        COMP001: credentials configured: yes
+  [PASS] COMP001: UserAccounts table present: False
+        NOTE: COMP001 cannot authenticate users yet (no UserAccounts table). Its database was not modified.
+        COMP002: credentials configured: yes
+  [PASS] COMP002: UserAccounts table present: True
+        COMP003: credentials configured: yes
+  [PASS] COMP003: UserAccounts table present: True
+
+--- Authentication (production path) ---
+        Target tenant: COMP001 / My First Company (CompanyId 1)
+        Username: admin (password not printed)
+  [FAIL] authentication: InvalidOperationException: Tenant 'My First Company' (CompanyId 1) does not have a UserAccounts table yet, so it cannot authenticate users. Its database schema predates the authentication module; the database was not modified by this check.
+
+--- Context selection vs. tenant schema ---
+  [PASS] context used: TenantAlphaEliteDbContext
+
+--- Dashboard / module queries (same queries the main window runs) ---
+  [PASS] Members (count): 1
+  [PASS] Members active (count): 1
+  [PASS] Attendance (count): 1
+  [PASS] Attendance today (count): 0
+  [PASS] Attendance trend last 30 days (rows): 1
+  [PASS] Payments (count): 1
+  [PASS] Payments total (sum): 500.00
+  [PASS] Payments monthly trend rows (last 6 months): 1
+  [PASS] Feedback (count): 1
+  [PASS] Feedback average rating: 1
+  [PASS] Inquiries (count): 5
+  [PASS] Inquiries pending follow-up (count): 0
+  [FAIL] Subscriptions (count): SqlException: Invalid object name 'Subscriptions'.
+  [FAIL] Subscriptions active (count): SqlException: Invalid object name 'Subscriptions'.
+  [FAIL] Retention records (count): SqlException: Invalid object name 'RetentionRecords'.
+  [FAIL] Retention records pending approval (count): SqlException: Invalid object name 'RetentionRecords'.
+
+--- Main window construction (no window is shown) ---
+  [PASS] Form1 constructed; tenant switcher: items=2, selected=My First Company (COMP001); session: role=Member; branchAware=False; branchId=all; memberId=n/a; permissions=3
+
+--- Error signature scan ---
+  [FAIL] Subscriptions (count): SqlException: Invalid object name 'Subscriptions'.
+  [FAIL] Subscriptions active (count): SqlException: Invalid object name 'Subscriptions'.
+  [FAIL] Retention records (count): SqlException: Invalid object name 'RetentionRecords'.
+  [FAIL] Retention records pending approval (count): SqlException: Invalid object name 'RetentionRecords'.
+
+--- Result: FAILURES PRESENT | checks: 22 | failures: 5 ---
+        - authentication: InvalidOperationException: Tenant 'My First Company' (CompanyId 1) does not have a UserAccounts table yet, so it cannot authenticate users. Its database schema predates the authentication module; the database was not modified by this check.
+        - Subscriptions (count): SqlException: Invalid object name 'Subscriptions'.
+        - Subscriptions active (count): SqlException: Invalid object name 'Subscriptions'.
+        - Retention records (count): SqlException: Invalid object name 'RetentionRecords'.
+        - Retention records pending approval (count): SqlException: Invalid object name 'RetentionRecords'.
+Report written to: C:\Users\axeld\source\repos\AlphaElite.winforms\AlphaElite.winforms\bin\Debug\net10.0-windows\selftest-report.txt

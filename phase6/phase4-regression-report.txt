@@ -1,0 +1,79 @@
+======================================================================
+PHASE 4 ACCEPTANCE VERIFICATION (read-only)
+======================================================================
+Target: COMP003 / Alpha Elite - Tenant C (CompanyId 3)
+
+--- User accounts and roles ---
+  [PASS] user 'admin': role=Admin active=True branchId=2 memberId=null
+  [PASS] user 'manager': role=Manager active=True branchId=1 memberId=null
+  [PASS] user 'gymstaff': role=GymStaff active=True branchId=2 memberId=null
+  [PASS] user 'member': role=Member active=True branchId=1 memberId=1
+
+--- 'admin' (Admin) ---
+        session: role=Admin; branchAware=True; branchId=all; memberId=n/a; permissions=10
+        nav    : Dashboard, Members, Attendance, Payments, Feedback, Inquiries, Subscriptions, Retention, Complaints, UserManagement
+  [PASS] admin menu visibility: Dashboard, Members, Attendance, Payments, Feedback, Inquiries, Subscriptions, Retention, Complaints, UserManagement
+        counts : members=6 attendance=11 payments=5 feedback=5 inquiries=10 complaints=2
+  [PASS] admin branch/member isolation: members=6 attendance=11 payments=5 feedback=5 inquiries=10 complaints=2
+
+--- 'manager' (Manager) ---
+        session: role=Manager; branchAware=True; branchId=1; memberId=n/a; permissions=8
+        nav    : Dashboard, Members, Attendance, Feedback, Inquiries, Retention, Complaints, UserManagement
+  [PASS] manager menu visibility: Dashboard, Members, Attendance, Feedback, Inquiries, Retention, Complaints, UserManagement
+        counts : members=1 attendance=4 payments=1 feedback=1 inquiries=5 complaints=1
+  [PASS] manager branch/member isolation: members=1 attendance=4 payments=1 feedback=1 inquiries=5 complaints=1
+  [PASS] manager attendance capped below tenant total: attendance=4 < 11
+
+--- 'gymstaff' (GymStaff) ---
+        session: role=GymStaff; branchAware=True; branchId=2; memberId=n/a; permissions=5
+        nav    : Members, Attendance, Payments, Inquiries, Retention
+  [PASS] gymstaff menu visibility: Members, Attendance, Payments, Inquiries, Retention
+        counts : members=5 attendance=7 payments=4 feedback=4 inquiries=5 complaints=1
+  [PASS] gymstaff branch/member isolation: members=5 attendance=7 payments=4 feedback=4 inquiries=5 complaints=1
+  [PASS] gymstaff attendance capped below tenant total: attendance=7 < 11
+
+--- 'member' (Member) ---
+        session: role=Member; branchAware=True; branchId=all; memberId=1; permissions=3
+        nav    : My Membership, My Attendance, My Payments, Feedback, Complaints
+  [PASS] member menu visibility: My Membership, My Attendance, My Payments, Feedback, Complaints
+        counts : members=1 attendance=4 payments=1 feedback=1 inquiries=10 complaints=1
+  [PASS] member branch/member isolation: members=1 attendance=4 payments=1 feedback=1 inquiries=10 complaints=1
+  [PASS] member attendance capped below tenant total: attendance=4 < 11
+
+--- Programmatic authorization (central service) ---
+  [PASS] Member -> ManageSubscriptions: blocked
+  [PASS] Member -> ManageUsers: blocked
+  [PASS] Member -> ManageMembers: blocked
+  [PASS] GymStaff -> ManageUsers: blocked
+  [PASS] GymStaff -> ManageSubscriptions: blocked
+  [PASS] Manager -> ManageSubscriptions: blocked
+  [PASS] Manager -> ManageUsers: allowed
+  [PASS] Admin -> ManageUsers: allowed
+  [PASS] Admin -> ManageSubscriptions: allowed
+  [PASS] MasterAdmin -> TenantManagement: allowed
+  [PASS] EnsureAuthorized throws for member/ManageUsers: UnauthorizedAccessException
+
+--- Complaint workflow (transactional; rolled back) ---
+  [PASS] member creates own complaint: rows=1
+  [PASS] member sees own complaint: rows=1
+  [PASS] BR-B scope cannot see BR-A complaint: BR-B rows=0
+  [PASS] staff updates status/resolution: rows=1
+        transaction rolled back - no complaint row persisted
+
+--- Legacy SHA-256 -> PBKDF2 upgrade (admin) ---
+  [PASS] admin login before upgrade: role=Admin rehash=False
+        upgrade performed: False (false means it was already PBKDF2)
+  [PASS] admin login after upgrade: accepted
+  [PASS] admin no longer needs rehash: rehash=False
+  [PASS] second admin login succeeds: role=Admin
+  [PASS] stored hash is salted PBKDF2 (value not printed): PBKDF2-SHA256
+
+--- Sources and master unchanged ---
+        COMP001: members=1, payments=1 (read-only)
+        COMP002: members=5, payments=4 (read-only)
+  [PASS] master unchanged: Companies=3, CompanyDatabase=3
+
+--- Error signature scan ---
+  [PASS] no Invalid column/object, connection-login, null-reference, FK or unauthorized errors.
+
+--- Result: ALL CHECKS PASSED | checks: 36 | failures: 0 ---

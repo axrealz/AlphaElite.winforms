@@ -1,0 +1,66 @@
+======================================================================
+PHASE 6 ACCEPTANCE VERIFICATION (business features)
+======================================================================
+
+--- 1. Demo data (subscriptions / attendance / complaints) ---
+  [PASS] 2 demo subscriptions exist: count=2
+  [PASS] demo subscriptions are active: active=2
+  [PASS] demo subscriptions not expired: minEnd=11/1/2026 12:00:00 AM
+  [PASS] demo subscriptions span both branches: branches=1,2
+  [PASS] current-week attendance exists: count=6
+  [PASS] no duplicate member/day check-ins overall: every member/day pair unique
+  [PASS] 2 demo complaints exist: count=2
+  [PASS] demo complaints in distinct branches: branches=1,2
+  [PASS] demo complaints carry open statuses: statuses=Pending,Under Review
+  [PASS] subscription status computes Active: plan=Monthly Gym (demo), end=2026-11-01
+
+--- 2. Scope rules per role (Form1 helpers) ---
+
+--- 'admin' (Admin) ---
+        nav    : Dashboard, Members, Attendance, Payments, Feedback, Inquiries, Subscriptions, Retention, Complaints, UserManagement
+  [PASS] 'admin' nav visibility intact: Dashboard, Members, Attendance, Payments, Feedback, Inquiries, Subscriptions, Retention, Complaints, UserManagement
+        counts : members=6 attendance=11 payments=5 feedback=5 inquiries=10 complaints=2
+  [PASS] 'admin' member self-only cap: members=6 attendance=11 payments=5 feedback=5 inquiries=10 complaints=2
+  [PASS] 'admin' branch cap (manager): members=6 attendance=11 payments=5 feedback=5 inquiries=10 complaints=2
+
+--- 'manager' (Manager) ---
+        nav    : Dashboard, Members, Attendance, Feedback, Inquiries, Retention, Complaints, UserManagement
+  [PASS] 'manager' nav visibility intact: Dashboard, Members, Attendance, Feedback, Inquiries, Retention, Complaints, UserManagement
+        counts : members=1 attendance=4 payments=1 feedback=1 inquiries=5 complaints=1
+  [PASS] 'manager' member self-only cap: members=1 attendance=4 payments=1 feedback=1 inquiries=5 complaints=1
+  [PASS] 'manager' branch cap (manager): members=1 attendance=4 payments=1 feedback=1 inquiries=5 complaints=1
+
+--- 'gymstaff' (GymStaff) ---
+        nav    : Members, Attendance, Payments, Inquiries, Retention
+  [PASS] 'gymstaff' nav visibility intact: Members, Attendance, Payments, Inquiries, Retention
+        counts : members=5 attendance=7 payments=4 feedback=4 inquiries=5 complaints=1
+  [PASS] 'gymstaff' member self-only cap: members=5 attendance=7 payments=4 feedback=4 inquiries=5 complaints=1
+  [PASS] 'gymstaff' branch cap (manager): members=5 attendance=7 payments=4 feedback=4 inquiries=5 complaints=1
+
+--- 'member' (Member) ---
+        nav    : My Membership, My Attendance, My Payments, Feedback, Complaints
+  [PASS] 'member' nav visibility intact: My Membership, My Attendance, My Payments, Feedback, Complaints
+        counts : members=1 attendance=4 payments=1 feedback=1 inquiries=10 complaints=1
+  [PASS] 'member' member self-only cap: members=1 attendance=4 payments=1 feedback=1 inquiries=10 complaints=1
+  [PASS] 'member' branch cap (manager): members=1 attendance=4 payments=1 feedback=1 inquiries=10 complaints=1
+
+--- 3. Error hygiene (reflected) ---
+  [PASS] ShowDbError helper exists (no raw SQL to users): present
+
+--- 4. Baselines (A / B / C / Master) ---
+  [PASS] Tenant A members = 1: count=1
+  [PASS] Tenant A attendance = 1: count=1
+  [PASS] Tenant A payments = 1 (total 500.00): count=1
+  [PASS] Tenant B members = 5: count=5
+  [PASS] Tenant B attendance = 4: count=4
+  [PASS] Tenant B payments = 4 (total 3650.00): count=4
+  [PASS] Tenant C members = 6: count=6
+  [PASS] Tenant C inquiries = 10: count=10
+  [PASS] Tenant C feedbacks = 5: count=5
+  [PASS] Tenant C payments = 5 (total 4150.00): count=5
+  [PASS] Tenant C branches = 2: count=2
+  [PASS] Tenant C user accounts = 4: count=4
+  [PASS] Tenant C retention records = 1: count=1
+  [PASS] Tenant C migrated member rows unchanged: 102:A,101:I,103:A,104:I,105:A,106:A
+
+--- Result: OK | checks: 37 | failures: 0 ---
